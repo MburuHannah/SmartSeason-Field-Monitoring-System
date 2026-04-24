@@ -31,7 +31,7 @@ export default function FieldsList() {
 
   useEffect(() => {
     loadFields();
-  }, [isAdmin]);
+}, [isAdmin, location.key]);
 
   const handleDelete = async (fieldId: string) => {
     if (window.confirm("Are you sure you want to delete this field? This action cannot be undone.")) {
