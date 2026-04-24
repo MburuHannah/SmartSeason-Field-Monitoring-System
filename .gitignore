@@ -1,1 +1,24 @@
-node_modules
+# Node.js
+node_modules/
+dist/
+build/
+.npm/
+.DS_Store
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+venv/
+backend/venv/
+.venv/
+env/
+db.sqlite3
+.env
+.env.local
+*.log
+
+# Windows
+Thumbs.db
+Desktop.ini
