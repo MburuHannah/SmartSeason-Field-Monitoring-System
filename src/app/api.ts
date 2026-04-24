@@ -1,16 +1,16 @@
 // api.ts
-const API_BASE = "http://localhost:8000/api";
+export const API_BASE = (import.meta as any).env?.VITE_API_URL || "http://127.0.0.1:8000/api";
 
-export const getAuthHeaders = () => {
+export const getAuthHeaders = (): Record<string, string> => {
   const token = localStorage.getItem("accessToken");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
 
 export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
-  const headers = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...getAuthHeaders(),
-    ...options.headers,
+    ...(options.headers as Record<string, string> || {}),
   };
 
   const response = await fetch(`${API_BASE}${endpoint}`, {
