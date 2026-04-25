@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 
+import pymysql
+pymysql.version_info = (2, 2, 1, "final", 0)  # trick Django into thinking mysqlclient ≥ 2.2.1
+pymysql.install_as_MySQLdb()
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -31,6 +37,16 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
 
 AUTH_USER_MODEL = 'accounts.User'
+
+CORS_ALLOWED_ORIGINS = [
+    "https://smartseasonfieldsystem.vercel.app", 
+    "http://localhost:5173", # Keeps local development working
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://smartseasonfieldsystem.vercel.app", 
+]
 
 
 # Application definition
@@ -90,18 +106,26 @@ WSGI_APPLICATION = 'smartseason.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+import os
+
+# Use a conditional to check if we are on Render
+# Render automatically sets the environment variable 'RENDER' to 'true'
+IS_PRODUCTION = os.getenv('RENDER', 'False') == 'true'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQLDATABASE', 'smartseason'),
-        'USER': os.getenv('MYSQLUSER', 'root'),
-        'PASSWORD': os.getenv('MYSQLPASSWORD', '0000'),
-        'HOST': os.getenv('MYSQLHOST', '127.0.0.1'),
-        'PORT': os.getenv('MYSQLPORT', '3306'),
+        'NAME': os.getenv('DB_NAME', 'smartseason'),
+        'USER': os.getenv('DB_USER', 'root'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '0000'),
+        'HOST': os.getenv('DB_HOST', '127.0.0.1'),
+        'PORT': os.getenv('DB_PORT', '3306'),
+        'OPTIONS': {
+            # This helps with connection stability on some cloud providers
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 

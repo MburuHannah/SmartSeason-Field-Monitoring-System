@@ -112,7 +112,7 @@ export default function Login() {
         <div className="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm mb-2">Credentials:</p>
           <p className="text-xs text-gray-700">Admin: Password-admin123</p>
-          <p className="text-xs text-gray-700">Agent1: Password-password123</p>
+          <p className="text-xs text-gray-700">Agent9: Password-password123</p>
         </div>
       </div>
     </div>
